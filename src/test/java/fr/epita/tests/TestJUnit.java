@@ -13,7 +13,7 @@ public class TestJUnit {
         Integer number = 5;
 
         //when
-        Integer result = MathService.factorial(number);
+        Integer result = MathsService.factorial(number);
 
 
         //then
