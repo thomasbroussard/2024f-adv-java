@@ -1,3 +1,5 @@
+package fr.epita.quiz.services;
+
 public class MathService {
     public static Integer factorial(Integer number) {
         if (number < 0){

@@ -1,6 +1,7 @@
+
+import fr.epita.quiz.services.MathService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import fr.epita.maths.MathService;
 
 public class TestJUnit {
 
@@ -12,7 +13,7 @@ public class TestJUnit {
         Integer number = 0;
 
         //when
-        Integer result = MathService.factorial(number);
+        Integer result = fr.epita.quiz.services.MathService.factorial(number);
 
 
         //then
