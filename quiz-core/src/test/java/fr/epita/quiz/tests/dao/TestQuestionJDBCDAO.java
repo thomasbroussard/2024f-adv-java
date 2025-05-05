@@ -18,7 +18,7 @@ public class TestQuestionJDBCDAO {
 
     @BeforeEach
     public void setup() throws SQLException {
-        this.dao = new QuestionJDBCDAO();
+        //this.dao = new QuestionJDBCDAO();
     }
 
     @AfterEach

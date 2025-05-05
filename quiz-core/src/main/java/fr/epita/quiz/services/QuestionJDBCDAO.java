@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.epita.quiz.datamodel.Question;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.sql.DataSource;
 
 public class QuestionJDBCDAO {
 
+    DataSource dataSource;
 
-
-    public QuestionJDBCDAO() throws SQLException {
-        getConnection();
+    public QuestionJDBCDAO(@Autowired DataSource dataSource) throws SQLException {
+        this.dataSource = dataSource;
         initializeDatabase();
     }
 
-    private static Connection getConnection() throws SQLException {
-       return DriverManager.getConnection("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "sa", "");
+    private Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 
     private void initializeDatabase() throws SQLException {
