@@ -2,31 +2,34 @@ package fr.epita.quiz.tests.dao;
 
 import fr.epita.quiz.datamodel.Question;
 import fr.epita.quiz.services.QuestionJDBCDAO;
+import fr.epita.quiz.tests.spring.ApplicationConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {ApplicationConfiguration.class})
 public class TestQuestionJDBCDAO {
 
 
+    @Autowired
     private QuestionJDBCDAO dao;
 
-    @BeforeEach
-    public void setup() throws SQLException {
-        //this.dao = new QuestionJDBCDAO();
-    }
 
     @AfterEach
     public void tearDown() throws SQLException {
         this.dao.deleteAllQuestions();
     }
-
-
 
     @Test
     public void testCreate() throws SQLException {

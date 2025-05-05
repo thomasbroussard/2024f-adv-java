@@ -13,7 +13,7 @@ public class QuestionJDBCDAO {
 
     DataSource dataSource;
 
-    public QuestionJDBCDAO(@Autowired DataSource dataSource) throws SQLException {
+    public QuestionJDBCDAO(DataSource dataSource) throws SQLException {
         this.dataSource = dataSource;
         initializeDatabase();
     }
