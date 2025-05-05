@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.epita.quiz.datamodel.Question;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
 
@@ -15,14 +14,14 @@ public class QuestionJDBCDAO {
 
     public QuestionJDBCDAO(DataSource dataSource) throws SQLException {
         this.dataSource = dataSource;
-        initializeDatabase();
+        initializeTable();
     }
 
     private Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
-    private void initializeDatabase() throws SQLException {
+    private void initializeTable() throws SQLException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS questions ("
                 + "id INT AUTO_INCREMENT PRIMARY KEY,"
                 + "title VARCHAR(255) NOT NULL)";
