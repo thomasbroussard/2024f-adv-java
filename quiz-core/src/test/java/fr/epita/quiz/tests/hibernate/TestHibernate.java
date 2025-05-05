@@ -1,5 +1,6 @@
 package fr.epita.quiz.tests.hibernate;
 
+import fr.epita.quiz.datamodel.Answer;
 import fr.epita.quiz.tests.spring.ApplicationConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,21 @@ public class TestHibernate {
     @Test
     public void test(){
         Assertions.assertNotNull(em);
+
+        Answer answer = new Answer();
+        answer.setText("test");
+
+        //dao.create(answer)
+        em.persist(answer);
+
+        //dao.delete
+        em.remove(answer);
+
+        //dao.update()
+        em.merge(answer);
+
+        em.find();
+
     }
 
 }
