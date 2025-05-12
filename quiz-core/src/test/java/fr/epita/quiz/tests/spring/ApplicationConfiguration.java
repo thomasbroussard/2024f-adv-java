@@ -9,10 +9,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -28,6 +29,11 @@ public class ApplicationConfiguration {
         return new QuestionJDBCDAO(dataSource);
     }
 
+    @Bean
+    public String getHelloFromSpring(){
+        return "test from spring!";
+    }
+
     @Bean("answerDAO")
     public AnswerJDBCDAO answerJDBCDAO(
             @Autowired
@@ -37,16 +43,20 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactoryBean(DataSource dataSource){
-        LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-        Properties properties = new Properties();
-        properties.put("hbm2ddl.auto", "create");
-        localSessionFactoryBean.setHibernateProperties(properties);
-        localSessionFactoryBean.setDataSource(dataSource);
-        localSessionFactoryBean.setPackagesToScan("fr.epita.quiz.datamodel");
-        return localSessionFactoryBean;
-    }
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setDataSource(dataSource);
+        factoryBean.setPackagesToScan("fr.epita.quiz.datamodel");
+        factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
+        Properties jpaProperties = new Properties();
+        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "create");
+        jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        jpaProperties.setProperty("hibernate.show_sql", "true");
+
+        factoryBean.setJpaProperties(jpaProperties);
+        return factoryBean;
+    }
 
 
 
@@ -59,4 +69,10 @@ public class ApplicationConfiguration {
         driverManagerDataSource.setUsername("test");
         return driverManagerDataSource;
     }
+
+    @Bean
+    public JpaTransactionManager transactionManager(LocalContainerEntityManagerFactoryBean entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory.getObject());
+    }
+
 }
