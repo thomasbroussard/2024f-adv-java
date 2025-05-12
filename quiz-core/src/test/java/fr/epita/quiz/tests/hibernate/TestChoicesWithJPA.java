@@ -1,8 +1,8 @@
 package fr.epita.quiz.tests.hibernate;
 
-import fr.epita.quiz.datamodel.Answer;
-import fr.epita.quiz.datamodel.Question;
+import fr.epita.quiz.datamodel.Choice;
 import fr.epita.quiz.tests.spring.ApplicationConfiguration;
+import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,38 +10,27 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ApplicationConfiguration.class})
 @Transactional
-public class TestHibernate {
+public class TestChoicesWithJPA {
 
     @PersistenceContext
     EntityManager em;
 
-
     @Test
     public void test(){
-        Assertions.assertNotNull(em);
+        Choice choice = new Choice();
+        choice.setChoiceTitle("test");
+        choice.setChoiceValidity(true);
+        em.persist(choice);
 
-        Answer answer = new Answer();
-        answer.setText("test");
+        TypedQuery<Choice> allChoices = em.createQuery("from Choice", Choice.class);
+        List<Choice> resultList = allChoices.getResultList();
 
-        em.persist(new Question());
-        //dao.create(answer)
-        em.persist(answer);
-
-        //dao.update()
-        em.merge(answer);
-
-        //dao.delete
-        em.remove(answer);
-
-
-
-
+        Assertions.assertEquals(1, resultList.size());
     }
 
 }

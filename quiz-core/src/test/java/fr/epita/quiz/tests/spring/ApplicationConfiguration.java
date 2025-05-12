@@ -58,8 +58,6 @@ public class ApplicationConfiguration {
         return factoryBean;
     }
 
-
-
     @Bean("mainDatasource")
     public DataSource dataSource(){
         DriverManagerDataSource driverManagerDataSource =
