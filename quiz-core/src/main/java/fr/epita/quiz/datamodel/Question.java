@@ -1,20 +1,21 @@
 package fr.epita.quiz.datamodel;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="QUESTIONS")
 public class Question {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     Integer id;
 
     @Column
     String title;
+
 
     public String getTitle() {
         return title;
@@ -22,5 +23,13 @@ public class Question {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

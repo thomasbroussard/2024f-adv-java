@@ -1,16 +1,14 @@
 package fr.epita.quiz.datamodel;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="CHOICES")
 public class Choice {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
     @Column(name = "CHOICE_TITLE")
@@ -18,6 +16,9 @@ public class Choice {
 
     @Column(name = "CHOICE_VALIDITY")
     private Boolean choiceValidity;
+
+    @ManyToOne()
+    private Question question;
 
     public int getId() {
         return id;
@@ -41,5 +42,13 @@ public class Choice {
 
     public void setChoiceValidity(Boolean choiceValidity) {
         this.choiceValidity = choiceValidity;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public Question getQuestion() {
+        return question;
     }
 }
