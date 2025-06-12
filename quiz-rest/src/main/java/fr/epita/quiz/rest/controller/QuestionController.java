@@ -26,8 +26,8 @@ public class QuestionController {
       return "hello";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<QuestionDTO> getOneQuestion(@PathVariable int id) {
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<QuestionDTO> getOneQuestion(@PathVariable(name="id") int id) {
         Question question = em.find(Question.class, id);
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setId(id);
