@@ -2,3 +2,19 @@
 GET http://localhost:8080/api/questions
 
 ###
+
+### Send POST request with json body
+POST http://localhost:8080/api/questions
+Content-Type: application/json
+
+{
+  "title": "what is spring boot?"
+}
+
+### Send PUT request with json body
+PUT http://localhost:8080/api/questions/1
+Content-Type: application/json
+
+{
+  "title": "what is java?"
+}

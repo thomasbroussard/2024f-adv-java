@@ -20,5 +20,19 @@ public class QuestionController {
       return "hello";
     }
 
+    @PostMapping
+    public ResponseEntity<String> addQuestion(@RequestBody Question question) {
+        System.out.println(question);
+
+        return ResponseEntity.ok("question added");
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<String> updateQuestion(@RequestBody Question question, @PathVariable(name = "id") int id) {
+        System.out.println(question);
+        System.out.println("question updated : " + id);
+        return ResponseEntity.ok("question updated : " + id);
+    }
+
 
 } 
