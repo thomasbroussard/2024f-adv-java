@@ -42,12 +42,13 @@ public class QuestionJDBCDAO {
     // READ
     public List<Question> readAllQuestions() throws SQLException {
         List<Question> questions = new ArrayList<>();
-        String sql = "SELECT title FROM questions";
+        String sql = "SELECT id, title FROM questions";
         try (PreparedStatement stmt = getConnection().prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Question q = new Question();
+                q.setId(rs.getInt("id"));
                 q.setTitle(rs.getString("title"));
                 questions.add(q);
             }
