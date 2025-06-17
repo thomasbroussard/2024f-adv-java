@@ -35,6 +35,7 @@ public class TestAnswerJDBCDAO {
     public void testCreate() throws SQLException {
         //given
         Answer answer = new Answer();
+        answer.setId(1);
         answer.setText("test");
 
         //when

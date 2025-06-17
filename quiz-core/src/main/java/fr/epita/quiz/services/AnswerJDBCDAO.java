@@ -28,11 +28,12 @@ public class AnswerJDBCDAO {
     }
 
     public void createAnswer(Answer answer){
-        String sql = "INSERT INTO answers (text) VALUES (?)";
+        String sql = "INSERT INTO answers (id,text) VALUES (?,?)";
 
         try ( Connection connection = dataSource.getConnection();
                      PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, answer.getText());
+            pstmt.setInt(1, answer.getId());
+            pstmt.setString(2, answer.getText());
             pstmt.executeUpdate();
         }catch (SQLException sqle){
             sqle.printStackTrace();
