@@ -2,11 +2,13 @@ package fr.epita.quiz.rest.controller;
 
 import fr.epita.quiz.datamodel.Question;
 import fr.epita.quiz.rest.dto.QuestionDTO;
+import fr.epita.quiz.rest.services.QuizDataService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,9 @@ public class QuestionController {
 
     private static final Logger LOGGER = LogManager.getLogger(QuestionController.class);
 
-    @PersistenceContext
-    private EntityManager em;
 
+    @Autowired
+    QuizDataService quizDataService;
 
     @GetMapping
     public String getAllQuestions() {
@@ -28,7 +30,7 @@ public class QuestionController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<QuestionDTO> getOneQuestion(@PathVariable(name="id") int id) {
-        Question question = em.find(Question.class, id);
+        Question question = quizDataService.findQuestionById(id);
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setId(id);
         questionDTO.setTitle(question.getTitle());
@@ -36,13 +38,11 @@ public class QuestionController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<String> addQuestion(@RequestBody QuestionDTO questionDTO) {
         LOGGER.info("Adding questionDTO {}", questionDTO);
         Question question = new Question();
         question.setTitle(questionDTO.getTitle());
-        em.persist(question);
-
+        quizDataService.save(question);
         return ResponseEntity.ok("questionDTO added");
     }
 
