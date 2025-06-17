@@ -10,12 +10,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api/questions")
 public class QuestionController {
 
     private static final Logger LOGGER = LogManager.getLogger(QuestionController.class);
-
 
     @PersistenceContext
     private EntityManager em;
@@ -48,6 +48,12 @@ public class QuestionController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<String> updateQuestion(@RequestBody QuestionDTO question, @PathVariable(name = "id") int id) {
+        LOGGER.info("Updating question with id {}", id);
+        return ResponseEntity.ok("question updated : " + id);
+    }
+
+    @PatchMapping
+    public ResponseEntity<String> patchQuestion(@RequestBody QuestionDTO question, @PathVariable(name = "id") int id) {
         LOGGER.info("Updating question with id {}", id);
         return ResponseEntity.ok("question updated : " + id);
     }
