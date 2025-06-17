@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Quiz Management System</h1>
+            <p>Manage your quiz questions</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Add Question Form -->
+        <section class="form-section">
+            <h2>Add New Question</h2>
+            <form id="addQuestionForm" class="question-form">
+                <div class="form-group">
+                    <label for="questionTitle">Question Title:</label>
+                    <input type="text" id="questionTitle" name="title" required 
+                           placeholder="Enter your question here...">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Question</button>
+            </form>
+        </section>
+
+        <!-- Edit Question Form (initially hidden) -->
+        <section class="form-section" id="editSection" style="display: none;">
+            <h2>Edit Question</h2>
+            <form id="editQuestionForm" class="question-form">
+                <input type="hidden" id="editQuestionId">
+                <div class="form-group">
+                    <label for="editQuestionTitle">Question Title:</label>
+                    <input type="text" id="editQuestionTitle" name="title" required 
+                           placeholder="Enter your question here...">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update Question</button>
+                    <button type="button" id="cancelEdit" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Questions List -->
+        <section class="questions-section">
+            <div class="section-header">
+                <h2>Questions</h2>
+                <button id="refreshQuestions" class="btn btn-secondary">Refresh</button>
+            </div>
+            <div id="questionsContainer">
+                <!-- Questions will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Loading indicator -->
+        <div id="loadingIndicator" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+
+        <!-- Message display -->
+        <div id="messageContainer" class="message-container"></div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html> 
