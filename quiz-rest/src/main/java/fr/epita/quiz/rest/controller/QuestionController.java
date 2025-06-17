@@ -13,10 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/api/questions")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class QuestionController {
 
     private static final Logger LOGGER = LogManager.getLogger(QuestionController.class);
@@ -28,13 +31,30 @@ public class QuestionController {
     private DataSource dataSource;
 
     @GetMapping
-    public String getAllQuestions() {
-      return "hello";
+    public ResponseEntity<List<QuestionDTO>> getAllQuestions() {
+        try {
+            List<Question> questions = quizDataService.findAll();
+            List<QuestionDTO> questionDTOs = questions.stream()
+                    .map(question -> {
+                        QuestionDTO dto = new QuestionDTO();
+                        dto.setId(question.getId());
+                        dto.setTitle(question.getTitle());
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(questionDTOs);
+        } catch (Exception e) {
+            LOGGER.error("Error fetching questions", e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<QuestionDTO> getOneQuestion(@PathVariable(name="id") int id) {
         Question question = quizDataService.findQuestionById(id);
+        if (question == null) {
+            return ResponseEntity.notFound().build();
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setId(id);
         questionDTO.setTitle(question.getTitle());

@@ -6,6 +6,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class QuizDataService {
 
@@ -15,6 +17,10 @@ public class QuizDataService {
     public Question findQuestionById(int id) {
         Question question = em.find(Question.class, id);
         return question;
+    }
+
+    public List<Question> findAll() {
+        return em.createQuery("SELECT q FROM Question q", Question.class).getResultList();
     }
 
     @Transactional
