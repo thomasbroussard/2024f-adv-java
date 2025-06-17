@@ -22,4 +22,14 @@ public class QuizDataService {
         em.persist(question);
     }
 
+    @Transactional
+    public void update(Question question) {
+        em.merge(question);
+    }
+
+    @Transactional
+    public void delete(Question question) {
+        em.remove(question);
+    }
+
 }

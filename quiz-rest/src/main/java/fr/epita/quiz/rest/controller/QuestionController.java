@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
+
 
 @RestController
 @RequestMapping("/api/questions")
@@ -22,6 +24,8 @@ public class QuestionController {
 
     @Autowired
     QuizDataService quizDataService;
+    @Autowired
+    private DataSource dataSource;
 
     @GetMapping
     public String getAllQuestions() {
@@ -47,9 +51,13 @@ public class QuestionController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<String> updateQuestion(@RequestBody QuestionDTO question, @PathVariable(name = "id") int id) {
-        LOGGER.info("Updating question with id {}", id);
-        return ResponseEntity.ok("question updated : " + id);
+    public ResponseEntity<String> updateQuestion(@RequestBody QuestionDTO questionDTO, @PathVariable(name = "id") int id) {
+        LOGGER.info("Updating questionDTO with id {}", id);
+
+        Question questionToUpdate = quizDataService.findQuestionById(id);
+        questionToUpdate.setTitle(questionDTO.getTitle());
+        quizDataService.update(questionToUpdate);
+        return ResponseEntity.ok("questionDTO updated : " + id);
     }
 
     @PatchMapping
@@ -61,6 +69,8 @@ public class QuestionController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteQuestion(@PathVariable(name = "id") int id) {
         LOGGER.debug("question deleted :  {}", id);
+        Question question = quizDataService.findQuestionById(id);
+        quizDataService.delete(question);
         return ResponseEntity.ok("question deleted : " + id);
     }
 
