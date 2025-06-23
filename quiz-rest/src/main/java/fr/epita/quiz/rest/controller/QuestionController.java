@@ -3,9 +3,6 @@ package fr.epita.quiz.rest.controller;
 import fr.epita.quiz.datamodel.Question;
 import fr.epita.quiz.rest.dto.QuestionDTO;
 import fr.epita.quiz.rest.services.QuizDataService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +61,8 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<String> addQuestion(@RequestBody QuestionDTO questionDTO) {
         LOGGER.info("Adding questionDTO {}", questionDTO);
-        Question question = new Question();
-        question.setTitle(questionDTO.getTitle());
-        quizDataService.save(question);
+        quizDataService.recordQuestion(questionDTO);
+
         return ResponseEntity.ok("questionDTO added");
     }
 
