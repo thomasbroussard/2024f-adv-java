@@ -6,9 +6,12 @@ import fr.epita.quiz.rest.dto.ChoiceDTO;
 import fr.epita.quiz.rest.dto.QuestionDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -17,9 +20,24 @@ public class QuizDataService {
     @PersistenceContext
     private EntityManager em;
 
-    public Question findQuestionById(int id) {
+    public QuestionDTO findQuestionById(int id) {
         Question question = em.find(Question.class, id);
-        return question;
+        TypedQuery<Choice> query = em.createQuery("from Choice c where c.question = :q", Choice.class);
+        query.setParameter("q", question);
+        List<Choice> resultList = query.getResultList();
+        QuestionDTO questionDTO = new QuestionDTO();
+        questionDTO.setId(id);
+        questionDTO.setTitle(question.getTitle());
+        List<ChoiceDTO> choiceDTOS = new ArrayList<>();
+        for (Choice choice : resultList) {
+            ChoiceDTO e = new ChoiceDTO();
+            e.setId(choice.getId());
+            e.setChoiceTitle(choice.getChoiceTitle());
+            e.setChoiceValidity(choice.getChoiceValidity());
+            choiceDTOS.add(e);
+        }
+        questionDTO.setChoices(choiceDTOS);
+        return questionDTO;
     }
 
     public List<Question> findAll() {

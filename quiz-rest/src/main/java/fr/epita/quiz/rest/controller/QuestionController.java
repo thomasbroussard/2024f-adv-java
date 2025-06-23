@@ -48,14 +48,11 @@ public class QuestionController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<QuestionDTO> getOneQuestion(@PathVariable(name="id") int id) {
-        Question question = quizDataService.findQuestionById(id);
+        QuestionDTO question = quizDataService.findQuestionById(id);
         if (question == null) {
             return ResponseEntity.notFound().build();
         }
-        QuestionDTO questionDTO = new QuestionDTO();
-        questionDTO.setId(id);
-        questionDTO.setTitle(question.getTitle());
-        return ResponseEntity.ok(questionDTO);
+        return ResponseEntity.ok(question);
     }
 
     @PostMapping
@@ -70,7 +67,7 @@ public class QuestionController {
     public ResponseEntity<String> updateQuestion(@RequestBody QuestionDTO questionDTO, @PathVariable(name = "id") int id) {
         LOGGER.info("Updating questionDTO with id {}", id);
 
-        Question questionToUpdate = quizDataService.findQuestionById(id);
+        QuestionDTO questionToUpdate = quizDataService.findQuestionById(id);
         questionToUpdate.setTitle(questionDTO.getTitle());
         quizDataService.update(questionToUpdate);
         return ResponseEntity.ok("questionDTO updated : " + id);
